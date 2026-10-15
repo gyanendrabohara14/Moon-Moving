@@ -347,8 +347,8 @@ function __OriginkitBase_WireTerrainSynth(props: Props) {
         let dpr = 1
         const resize = () => {
             dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1)
-            W = root.offsetWidth || 1200
-            H = root.offsetHeight || 800
+            W = root.offsetWidth || window.innerWidth
+            H = root.offsetHeight || window.innerHeight
             const bw = Math.max(1, Math.round(W * dpr))
             const bh = Math.max(1, Math.round(H * dpr))
             if (canvas.width !== bw || canvas.height !== bh) {
@@ -467,7 +467,7 @@ function __OriginkitBase_WireTerrainSynth(props: Props) {
             gl.uniform2f(su.res, bw, bh)
             gl.uniform3f(su.up, r0[1], r1[1], r2[1])
             gl.uniform2f(su.focal, fx, fy)
-            gl.uniform3f(su.sun, sunX, sunY, SUN_RADIUS * sunSize * bh)
+            gl.uniform3f(su.sun, sunX, sunY, SUN_RADIUS * sunSize * Math.min(bw, bh))
             gl.uniform1f(su.bandT, tIdle * 0.12)
             gl.uniform3f(su.bg, bg[0] / 255, bg[1] / 255, bg[2] / 255)
             gl.uniform4f(su.accent, acc[0] / 255, acc[1] / 255, acc[2] / 255, sunSize > 0 ? acc[3] : 0)
@@ -557,8 +557,6 @@ function __OriginkitBase_WireTerrainSynth(props: Props) {
                 position: "relative",
                 width: "100%",
                 height: "100%",
-                minWidth: 1200,
-                minHeight: 800,
                 overflow: "hidden",
                 backgroundColor: props.background ?? DEFAULTS.background,
                 ...props.style,
